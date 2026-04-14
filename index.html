@@ -5,68 +5,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel OneState - EL MACHO TECH</title>
     <style>
-        :root { --gold: #f1c40f; --dark: #050505; --glass: rgba(20, 20, 20, 0.95); --red: #ff4d4d; --blue: #3498db; }
+        :root { --gold: #f1c40f; --dark: #0a0a0a; --glass: rgba(15, 15, 15, 0.95); --red: #ff4d4d; --blue: #3498db; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: white; margin: 0; padding: 20px; display: flex; justify-content: center; }
         
-        #login-screen { background: var(--glass); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid var(--gold); width: 350px; margin-top: 10vh; box-shadow: 0 0 30px rgba(241, 196, 15, 0.1); }
-        
-        #main-app { display: none; width: 100%; max-width: 900px; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .card { background: var(--glass); padding: 20px; border-radius: 15px; border: 1px solid #333; text-align: center; }
-        
-        .big-number { font-size: 40px; color: var(--gold); font-weight: bold; margin: 5px 0; }
-        
-        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.2s; margin-top: 10px; }
-        .btn-gold { background: var(--gold); color: black; }
-        .btn-red { background: var(--red); color: white; }
-        .btn-blue { background: var(--blue); color: white; }
-        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
+        /* TELA DE LOGIN */
+        #login-screen { background: var(--glass); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid var(--gold); width: 350px; margin-top: 10vh; box-shadow: 0 0 30px rgba(241, 196, 15, 0.2); }
+        #login-screen input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #111; color: white; margin-bottom: 20px; box-sizing: border-box; }
 
-        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #111; color: white; margin-bottom: 10px; box-sizing: border-box; }
-        .history-box { margin-top: 20px; background: #111; padding: 15px; border-radius: 10px; height: 150px; overflow-y: auto; font-size: 13px; text-align: left; border: 1px solid #222; }
+        /* PAINEL PRINCIPAL */
+        #main-app { display: none; width: 100%; max-width: 1000px; }
+        .container { background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 25px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        
+        .card { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid #222; position: relative; }
+        .card h3 { margin-top: 0; color: var(--gold); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .stats { font-size: 38px; font-weight: bold; margin: 10px 0; color: #fff; }
+        .stats span { color: var(--gold); }
+
+        .input-group { margin-bottom: 15px; }
+        label { display: block; font-size: 12px; color: #888; margin-bottom: 5px; text-transform: uppercase; }
+        input, select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
+
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-top: 5px; }
+        .btn-gold { background: var(--gold); color: #000; }
+        .btn-red { background: var(--red); color: #fff; }
+        .btn-blue { background: var(--blue); color: #fff; }
+        .btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
+
+        .log-box { margin-top: 25px; background: #000; border: 1px solid #222; border-radius: 10px; padding: 15px; height: 200px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 13px; }
+        .log-entry { border-bottom: 1px solid #111; padding: 5px 0; display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <h2 style="color:var(--gold)">EL MACHO TECH</h2>
-        <input type="text" id="user-login" placeholder="Nome do ADM">
-        <button class="btn btn-gold" onclick="entrar()">Acessar Painel</button>
+        <h1 style="color:var(--gold); margin:0;">EL MACHO</h1>
+        <p style="color:#666; font-size: 12px; margin-bottom: 25px;">CONTROL PANEL v2.0</p>
+        <input type="text" id="user-login" placeholder="NOME DO ADM (EX: RAMON)">
+        <button class="btn btn-gold" onclick="entrar()">ACESSAR SISTEMA</button>
     </div>
 
     <div id="main-app">
-        <div class="header">
-            <div id="user-welcome" style="font-weight: bold; color: var(--gold);">ADM: ---</div>
-            <button onclick="location.reload()" style="background:none; border:none; color:var(--red); cursor:pointer;">SAIR</button>
-        </div>
-
-        <div class="grid">
-            <div class="card" style="border-top: 4px solid var(--gold);">
-                <p style="margin:0; font-size: 12px; color: #888;">SALDO STATE COINS</p>
-                <div class="big-number"><span id="coin-count">0.00</span> <small style="font-size:15px">SC</small></div>
-                <button class="btn btn-gold" onclick="alterarValor('moedas', 1, 'Ganhou Salário')">+1.00 SC</button>
-                <button class="btn btn-gold" style="background:#b8860b" onclick="alterarValor('moedas', 10, 'Recebeu Bônus')">+10.00 SC</button>
+        <div class="container">
+            <div class="header">
+                <div>
+                    <span style="color:#666">AUTENTICADO:</span> 
+                    <span id="display-name" style="color:var(--gold); font-weight:bold;">---</span>
+                </div>
+                <button onclick="location.reload()" style="background:none; border:1px solid #444; color:#444; padding:5px 10px; cursor:pointer; border-radius:4px;">LOGOUT</button>
             </div>
 
-            <div class="card" style="border-top: 4px solid var(--blue);">
-                <p style="margin:0; font-size: 12px; color: #888;">LOGS DE HOJE</p>
-                <div class="big-number" style="color:var(--blue)"><span id="log-count">0</span></div>
-                <button class="btn btn-blue" onclick="alterarValor('logs', 1, 'Registrou Atividade')">Novo Log</button>
-            </div>
-        </div>
+            <div class="grid">
+                <div class="card" style="border-left: 5px solid var(--gold);">
+                    <h3>Carteira Virtual</h3>
+                    <div class="stats"><span id="coin-count">0.00</span> <small style="font-size:14px; color:#444">SC</small></div>
+                    <div class="input-group">
+                        <label>Adicionar Saldo</label>
+                        <select id="bonus-val">
+                            <option value="1">Salário (+1.00 SC)</option>
+                            <option value="10">Bônus (+10.00 SC)</option>
+                            <option value="50">Prêmio (+50.00 SC)</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-gold" onclick="processarAcao('moedas', 'bonus-val', 'Adição de Saldo')">Confirmar Recebimento</button>
+                </div>
 
-        <div class="card" style="margin-top: 20px; border-top: 4px solid var(--red);">
-            <h3 style="margin:0; color:var(--red); font-size: 14px;">CENTRAL DE PUNIÇÕES</h3>
-            <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <button class="btn btn-red" onclick="alterarValor('moedas', -5, 'Multa Leve')">Multa (-5 SC)</button>
-                <button class="btn btn-red" style="background:#900" onclick="alterarValor('moedas', -20, 'Multa Grave')">Multa (-20 SC)</button>
+                <div class="card" style="border-left: 5px solid var(--red);">
+                    <h3>Central de Multas</h3>
+                    <div class="input-group">
+                        <label>Motivo da Punição</label>
+                        <input type="text" id="punish-reason" placeholder="Ex: Erro em patrulha">
+                    </div>
+                    <div class="input-group">
+                        <label>Valor da Multa</label>
+                        <select id="punish-val">
+                            <option value="-5">Leve (-5.00 SC)</option>
+                            <option value="-20">Grave (-20.00 SC)</option>
+                            <option value="-50">Gravíssima (-50.00 SC)</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-red" onclick="processarAcao('moedas', 'punish-val', 'Punição Aplicada')">Aplicar Multa</button>
+                </div>
             </div>
-        </div>
 
-        <div class="history-box" id="log-history">
-            <p style="color:#555">Aguardando ações...</p>
+            <div class="card" style="margin-top:20px; border-left: 5px solid var(--blue);">
+                <h3>Registro de Trabalho</h3>
+                <div style="display:flex; justify-content: space-around; align-items: center;">
+                    <div class="stats" style="color:var(--blue)">LOGS: <span id="log-count" style="color:#fff">0</span></div>
+                    <button class="btn btn-blue" style="width:200px" onclick="processarAcao('logs', null, 'Log de Atividade')">Registrar Atividade</button>
+                </div>
+            </div>
+
+            <div class="log-box" id="history">
+                <div style="color:#333; text-align:center; margin-top:80px;">SISTEMA PRONTO PARA REGISTRO</div>
+            </div>
         </div>
     </div>
 
@@ -88,7 +123,7 @@
 
         window.entrar = async () => {
             const nome = document.getElementById('user-login').value.trim().toUpperCase();
-            if(!nome) return alert("Digite seu nome!");
+            if(!nome) return alert("INSIRA SEU NOME DE ADM");
             
             window.usuarioAtual = nome;
             const userRef = doc(db, "usuarios", nome);
@@ -100,7 +135,7 @@
 
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'block';
-            document.getElementById('user-welcome').innerText = "ADM: " + nome;
+            document.getElementById('display-name').innerText = nome;
 
             onSnapshot(userRef, (docSnap) => {
                 if (docSnap.exists()) {
@@ -110,18 +145,32 @@
             });
         };
 
-        window.alterarValor = async (campo, valor, acao) => {
+        window.processarAcao = async (campo, inputId, tipo) => {
             const userRef = doc(db, "usuarios", window.usuarioAtual);
-            const hist = document.getElementById('log-history');
-            
+            let valor = 1; // Default para logs
+            let motivo = "";
+
+            if(inputId) {
+                valor = parseFloat(document.getElementById(inputId).value);
+                if(tipo === 'Punição Aplicada') {
+                    motivo = " - " + (document.getElementById('punish-reason').value || "Sem motivo");
+                }
+            }
+
             try {
                 await updateDoc(userRef, { [campo]: increment(valor) });
-                const p = document.createElement('p');
-                p.innerHTML = `<span style="color:#888">[${new Date().toLocaleTimeString()}]</span> <span style="color:var(--gold)">${acao}</span>`;
-                if(hist.firstChild && hist.firstChild.style.color === 'rgb(85, 85, 85)') hist.innerHTML = '';
-                hist.prepend(p);
+                
+                const history = document.getElementById('history');
+                if(history.innerText.includes("PRONTO")) history.innerHTML = "";
+                
+                const div = document.createElement('div');
+                div.className = "log-entry";
+                div.innerHTML = `<span>[${new Date().toLocaleTimeString()}] ${tipo}${motivo}</span> <span style="color:var(--gold)">${valor > 0 ? '+'+valor : valor}</span>`;
+                history.prepend(div);
+                
+                if(tipo === 'Punição Aplicada') document.getElementById('punish-reason').value = "";
             } catch (e) {
-                alert("Erro na conexão!");
+                alert("ERRO DE SINCRONIZAÇÃO");
             }
         };
     </script>
