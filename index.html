@@ -5,104 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel OneState - EL MACHO TECH</title>
     <style>
-        :root { 
-            --gold: #f1c40f; 
-            --dark: #0a0a0a; 
-            --glass: rgba(15, 15, 15, 0.95); 
-        }
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background: var(--dark); 
-            color: white; 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            padding: 20px; 
-        }
-        #login-screen { 
-            background: var(--glass); 
-            padding: 40px; 
-            border-radius: 20px; 
-            text-align: center; 
-            border: 1px solid var(--gold); 
-            width: 350px; 
-            margin-top: 10vh; 
-            box-shadow: 0 0 20px rgba(241, 196, 15, 0.2);
-        }
-        #main-app { 
-            display: none; 
-            width: 100%; 
-            max-width: 1100px; 
-        }
-        .coin-widget { 
-            background: linear-gradient(135deg, rgba(241, 196, 15, 0.15), rgba(0,0,0,0.8)); 
-            border: 2px solid var(--gold); 
-            padding: 25px; 
-            border-radius: 15px; 
-            text-align: center; 
-            margin-bottom: 20px; 
-        }
-        .coin-amount { 
-            font-size: 48px; 
-            color: var(--gold); 
-            font-weight: bold; 
-            margin: 10px 0;
-        }
-        input { 
-            width: 100%; 
-            padding: 12px; 
-            border-radius: 8px; 
-            border: 2px solid #333; 
-            background: rgba(0,0,0,0.6); 
-            color: white; 
-            margin-bottom: 15px; 
-            box-sizing: border-box; 
-        }
-        .btn { 
-            width: 100%; 
-            padding: 15px; 
-            border: none; 
-            border-radius: 8px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            text-transform: uppercase; 
-            transition: 0.3s;
-        }
-        .btn-gold { 
-            background: var(--gold); 
-            color: black; 
-        }
-        .btn-gold:hover {
-            background: #d4ac0d;
-            transform: scale(1.02);
-        }
-        .status-cloud {
-            font-size: 12px;
-            color: #2ecc71;
-            margin-top: 5px;
-        }
+        :root { --gold: #f1c40f; --dark: #050505; --glass: rgba(20, 20, 20, 0.95); --red: #ff4d4d; --green: #2ecc71; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: white; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        
+        /* LOGIN */
+        #login-screen { background: var(--glass); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid var(--gold); width: 350px; margin-top: 10vh; box-shadow: 0 0 30px rgba(241, 196, 15, 0.1); }
+        
+        /* PAINEL PRINCIPAL */
+        #main-app { display: none; width: 100%; max-width: 900px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background: var(--glass); padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        
+        /* MOEDAS E LOGS */
+        .stats-box { text-align: center; border: 2px solid var(--gold); background: linear-gradient(135deg, rgba(241,196,15,0.1), transparent); }
+        .big-number { font-size: 40px; color: var(--gold); font-weight: bold; margin: 5px 0; }
+        
+        /* BOTÕES */
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.2s; margin-top: 10px; }
+        .btn-gold { background: var(--gold); color: black; }
+        .btn-red { background: var(--red); color: white; }
+        .btn-green { background: var(--green); color: white; }
+        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
+
+        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #111; color: white; margin-bottom: 10px; box-sizing: border-box; }
+        .badge { background: var(--gold); color: black; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <h2 style="color:var(--gold); margin-bottom: 5px;">SISTEMA EL MACHO</h2>
-        <div class="status-cloud">● NUVEM ATIVA</div>
-        <p style="font-size: 14px; color: #888;">Digite seu nome de ADM para entrar</p>
-        <input type="text" id="user-login" placeholder="Ex: Ramon_ADM">
-        <button class="btn btn-gold" onclick="entrar()">Acessar Painel</button>
+        <h2 style="color:var(--gold)">EL MACHO TECH</h2>
+        <p style="color:#888">SISTEMA DE GESTÃO ONSTATE</p>
+        <input type="text" id="user-login" placeholder="Nome do ADM">
+        <button class="btn btn-gold" onclick="entrar()">Conectar ao Servidor</button>
     </div>
 
     <div id="main-app">
-        <div class="coin-widget">
-            <div id="user-welcome" style="font-size: 18px; letter-spacing: 1px;">BEM-VINDO</div>
-            <div class="coin-amount"><span id="coin-count">0.00</span> <small style="font-size: 20px;">SC</small></div>
-            <p style="color: #888;">State Coins em tempo real</p>
-            <button class="btn btn-gold" style="width:250px;" onclick="adicionarMoeda()">+1.00 State Coin</button>
+        <div class="header">
+            <div>
+                <span id="user-welcome" style="font-weight: bold; font-size: 18px;">ADM</span> 
+                <span class="badge">OFICIAL</span>
+            </div>
+            <button onclick="location.reload()" style="background:none; border:none; color:#ff4d4d; cursor:pointer;">Desconectar</button>
         </div>
-        
-        <div style="text-align: center;">
-            <button class="btn" style="background: #222; color: #888; width: 150px;" onclick="location.reload()">Sair do Sistema</button>
+
+        <div class="grid">
+            <div class="card stats-box">
+                <p style="margin:0; font-size: 14px; letter-spacing: 1px;">SALDO STATE COINS</p>
+                <div class="big-number"><span id="coin-count">0.00</span></div>
+                <button class="btn btn-gold" onclick="alterarValor('moedas', 1)">+ 1.00 SC (Salário)</button>
+                <button class="btn btn-gold" style="background:#b8860b" onclick="alterarValor('moedas', 10)">+ 10.00 SC (Bônus)</button>
+            </div>
+
+            <div class="card stats-box" style="border-color: #3498db; background: linear-gradient(135deg, rgba(52,152,219,0.1), transparent);">
+                <p style="margin:0; font-size: 14px; letter-spacing: 1px; color:#3498db">TOTAL DE LOGS</p>
+                <div class="big-number" style="color:#3498db"><span id="log-count">0</span></div>
+                <button class="btn" style="background:#3498db; color:white;" onclick="alterarValor('logs', 1)">Registrar Novo Log</button>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 20px;">
+            <h3 style="margin-top:0; color:var(--red)">⚠️ CENTRAL DE PUNIÇÕES</h3>
+            <p style="font-size: 13px; color:#888">As punições abaixo descontam moedas do saldo atual.</p>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-red" onclick="alterarValor('moedas', -5)">Multa Leve (-5 SC)</button>
+                <button class="btn btn-red" style="background:#900" onclick="alterarValor('moedas', -20)">Multa Grave (-20 SC)</button>
+            </div>
         </div>
     </div>
 
@@ -110,7 +80,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // CONFIGURAÇÃO VINDA DO SEU CONSOLE FIREBASE
         const firebaseConfig = {
           apiKey: "AIzaSyBT61_LDGahjUVL7wSuQ0m960QLgTvcFus",
           authDomain: "painel-onestate.firebaseapp.com",
@@ -120,46 +89,39 @@
           appId: "1:943105366215:web:2b024ad3df731f2bff06e2"
         };
 
-        // INICIALIZANDO O BANCO
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // FUNÇÃO PARA ENTRAR
         window.entrar = async () => {
             const nome = document.getElementById('user-login').value.trim().toUpperCase();
-            if(!nome) return alert("Por favor, digite seu nome!");
+            if(!nome) return alert("Identifique-se!");
             
             window.usuarioAtual = nome;
             const userRef = doc(db, "usuarios", nome);
             const userSnap = await getDoc(userRef);
 
-            // SE O USUÁRIO NÃO EXISTIR NO BANCO, CRIA UM NOVO
             if (!userSnap.exists()) {
-                await setDoc(userRef, { moedas: 0, cargo: "ADM" });
+                await setDoc(userRef, { moedas: 0, logs: 0 });
             }
 
-            // TROCA DE TELA
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'block';
             document.getElementById('user-welcome').innerText = "ADM: " + nome;
 
-            // FICA "OUVINDO" O BANCO EM TEMPO REAL
             onSnapshot(userRef, (doc) => {
                 if (doc.exists()) {
                     document.getElementById('coin-count').innerText = doc.data().moedas.toFixed(2);
+                    document.getElementById('log-count').innerText = doc.data().logs || 0;
                 }
             });
         };
 
-        // FUNÇÃO PARA ADICIONAR MOEDA NO GOOGLE
-        window.adicionarMoeda = async () => {
+        window.alterarValor = async (campo, valor) => {
             const userRef = doc(db, "usuarios", window.usuarioAtual);
             try {
-                await updateDoc(userRef, { 
-                    moedas: increment(1) 
-                });
+                await updateDoc(userRef, { [campo]: increment(valor) });
             } catch (e) {
-                console.error("Erro ao salvar:", e);
+                alert("Erro ao sincronizar com a nuvem!");
             }
         };
     </script>
