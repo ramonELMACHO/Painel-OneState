@@ -5,74 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel OneState - EL MACHO TECH</title>
     <style>
-        :root { --gold: #f1c40f; --dark: #050505; --glass: rgba(20, 20, 20, 0.95); --red: #ff4d4d; --green: #2ecc71; }
+        :root { --gold: #f1c40f; --dark: #050505; --glass: rgba(20, 20, 20, 0.95); --red: #ff4d4d; --blue: #3498db; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: white; margin: 0; padding: 20px; display: flex; justify-content: center; }
         
-        /* LOGIN */
         #login-screen { background: var(--glass); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid var(--gold); width: 350px; margin-top: 10vh; box-shadow: 0 0 30px rgba(241, 196, 15, 0.1); }
         
-        /* PAINEL PRINCIPAL */
         #main-app { display: none; width: 100%; max-width: 900px; }
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; }
         
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .card { background: var(--glass); padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        .card { background: var(--glass); padding: 20px; border-radius: 15px; border: 1px solid #333; text-align: center; }
         
-        /* MOEDAS E LOGS */
-        .stats-box { text-align: center; border: 2px solid var(--gold); background: linear-gradient(135deg, rgba(241,196,15,0.1), transparent); }
         .big-number { font-size: 40px; color: var(--gold); font-weight: bold; margin: 5px 0; }
         
-        /* BOTÕES */
         .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.2s; margin-top: 10px; }
         .btn-gold { background: var(--gold); color: black; }
         .btn-red { background: var(--red); color: white; }
-        .btn-green { background: var(--green); color: white; }
+        .btn-blue { background: var(--blue); color: white; }
         .btn:hover { opacity: 0.8; transform: translateY(-2px); }
 
         input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #111; color: white; margin-bottom: 10px; box-sizing: border-box; }
-        .badge { background: var(--gold); color: black; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .history-box { margin-top: 20px; background: #111; padding: 15px; border-radius: 10px; height: 150px; overflow-y: auto; font-size: 13px; text-align: left; border: 1px solid #222; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
         <h2 style="color:var(--gold)">EL MACHO TECH</h2>
-        <p style="color:#888">SISTEMA DE GESTÃO ONSTATE</p>
         <input type="text" id="user-login" placeholder="Nome do ADM">
-        <button class="btn btn-gold" onclick="entrar()">Conectar ao Servidor</button>
+        <button class="btn btn-gold" onclick="entrar()">Acessar Painel</button>
     </div>
 
     <div id="main-app">
         <div class="header">
-            <div>
-                <span id="user-welcome" style="font-weight: bold; font-size: 18px;">ADM</span> 
-                <span class="badge">OFICIAL</span>
-            </div>
-            <button onclick="location.reload()" style="background:none; border:none; color:#ff4d4d; cursor:pointer;">Desconectar</button>
+            <div id="user-welcome" style="font-weight: bold; color: var(--gold);">ADM: ---</div>
+            <button onclick="location.reload()" style="background:none; border:none; color:var(--red); cursor:pointer;">SAIR</button>
         </div>
 
         <div class="grid">
-            <div class="card stats-box">
-                <p style="margin:0; font-size: 14px; letter-spacing: 1px;">SALDO STATE COINS</p>
-                <div class="big-number"><span id="coin-count">0.00</span></div>
-                <button class="btn btn-gold" onclick="alterarValor('moedas', 1)">+ 1.00 SC (Salário)</button>
-                <button class="btn btn-gold" style="background:#b8860b" onclick="alterarValor('moedas', 10)">+ 10.00 SC (Bônus)</button>
+            <div class="card" style="border-top: 4px solid var(--gold);">
+                <p style="margin:0; font-size: 12px; color: #888;">SALDO STATE COINS</p>
+                <div class="big-number"><span id="coin-count">0.00</span> <small style="font-size:15px">SC</small></div>
+                <button class="btn btn-gold" onclick="alterarValor('moedas', 1, 'Ganhou Salário')">+1.00 SC</button>
+                <button class="btn btn-gold" style="background:#b8860b" onclick="alterarValor('moedas', 10, 'Recebeu Bônus')">+10.00 SC</button>
             </div>
 
-            <div class="card stats-box" style="border-color: #3498db; background: linear-gradient(135deg, rgba(52,152,219,0.1), transparent);">
-                <p style="margin:0; font-size: 14px; letter-spacing: 1px; color:#3498db">TOTAL DE LOGS</p>
-                <div class="big-number" style="color:#3498db"><span id="log-count">0</span></div>
-                <button class="btn" style="background:#3498db; color:white;" onclick="alterarValor('logs', 1)">Registrar Novo Log</button>
+            <div class="card" style="border-top: 4px solid var(--blue);">
+                <p style="margin:0; font-size: 12px; color: #888;">LOGS DE HOJE</p>
+                <div class="big-number" style="color:var(--blue)"><span id="log-count">0</span></div>
+                <button class="btn btn-blue" onclick="alterarValor('logs', 1, 'Registrou Atividade')">Novo Log</button>
             </div>
         </div>
 
-        <div class="card" style="margin-top: 20px;">
-            <h3 style="margin-top:0; color:var(--red)">⚠️ CENTRAL DE PUNIÇÕES</h3>
-            <p style="font-size: 13px; color:#888">As punições abaixo descontam moedas do saldo atual.</p>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn btn-red" onclick="alterarValor('moedas', -5)">Multa Leve (-5 SC)</button>
-                <button class="btn btn-red" style="background:#900" onclick="alterarValor('moedas', -20)">Multa Grave (-20 SC)</button>
+        <div class="card" style="margin-top: 20px; border-top: 4px solid var(--red);">
+            <h3 style="margin:0; color:var(--red); font-size: 14px;">CENTRAL DE PUNIÇÕES</h3>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button class="btn btn-red" onclick="alterarValor('moedas', -5, 'Multa Leve')">Multa (-5 SC)</button>
+                <button class="btn btn-red" style="background:#900" onclick="alterarValor('moedas', -20, 'Multa Grave')">Multa (-20 SC)</button>
             </div>
+        </div>
+
+        <div class="history-box" id="log-history">
+            <p style="color:#555">Aguardando ações...</p>
         </div>
     </div>
 
@@ -94,7 +88,7 @@
 
         window.entrar = async () => {
             const nome = document.getElementById('user-login').value.trim().toUpperCase();
-            if(!nome) return alert("Identifique-se!");
+            if(!nome) return alert("Digite seu nome!");
             
             window.usuarioAtual = nome;
             const userRef = doc(db, "usuarios", nome);
@@ -108,20 +102,26 @@
             document.getElementById('main-app').style.display = 'block';
             document.getElementById('user-welcome').innerText = "ADM: " + nome;
 
-            onSnapshot(userRef, (doc) => {
-                if (doc.exists()) {
-                    document.getElementById('coin-count').innerText = doc.data().moedas.toFixed(2);
-                    document.getElementById('log-count').innerText = doc.data().logs || 0;
+            onSnapshot(userRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    document.getElementById('coin-count').innerText = docSnap.data().moedas.toFixed(2);
+                    document.getElementById('log-count').innerText = docSnap.data().logs || 0;
                 }
             });
         };
 
-        window.alterarValor = async (campo, valor) => {
+        window.alterarValor = async (campo, valor, acao) => {
             const userRef = doc(db, "usuarios", window.usuarioAtual);
+            const hist = document.getElementById('log-history');
+            
             try {
                 await updateDoc(userRef, { [campo]: increment(valor) });
+                const p = document.createElement('p');
+                p.innerHTML = `<span style="color:#888">[${new Date().toLocaleTimeString()}]</span> <span style="color:var(--gold)">${acao}</span>`;
+                if(hist.firstChild && hist.firstChild.style.color === 'rgb(85, 85, 85)') hist.innerHTML = '';
+                hist.prepend(p);
             } catch (e) {
-                alert("Erro ao sincronizar com a nuvem!");
+                alert("Erro na conexão!");
             }
         };
     </script>
