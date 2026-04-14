@@ -3,277 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel OneState - ADM-EL MACHO</title>
+    <title>Painel OneState - EL MACHO TECH</title>
     <style>
-        :root { --gold: #f1c40f; --dark: #0a0a0a; --glass: rgba(15, 15, 15, 0.95); --red: #e74c3c; --green: #2ecc71; --blue: #3498db; }
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: var(--dark) url('http://googleusercontent.com/image_collection/image_retrieval/11042365248659034183_0') no-repeat center center fixed;
-            background-size: cover;
-            color: white; margin: 0; display: flex; justify-content: center; padding: 20px;
+        :root { 
+            --gold: #f1c40f; 
+            --dark: #0a0a0a; 
+            --glass: rgba(15, 15, 15, 0.95); 
         }
-        #login-screen { background: var(--glass); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid var(--gold); width: 350px; margin-top: 10vh; }
-        #main-app { display: none; width: 100%; max-width: 1100px; }
-        .container { background: rgba(10, 10, 10, 0.92); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(12px); margin-bottom: 20px; }
-        
-        /* WIDGET DE MOEDAS */
-        .coin-widget { background: linear-gradient(135deg, rgba(241, 196, 15, 0.15), rgba(0,0,0,0.8)); border: 2px solid var(--gold); padding: 15px; border-radius: 15px; text-align: center; margin-bottom: 20px; box-shadow: 0 0 15px rgba(241,196,15,0.2); }
-        .coin-amount { font-size: 28px; color: var(--gold); font-weight: bold; text-shadow: 0 0 10px rgba(241,196,15,0.5); }
-        
-        /* STATUS DE HUMOR */
-        .humor-selector { display: flex; gap: 8px; align-items: center; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 10px; margin-top: 8px; }
-        .humor-btn { cursor: pointer; font-size: 18px; opacity: 0.3; transition: 0.3s; filter: grayscale(1); }
-        .humor-btn.active { opacity: 1; filter: grayscale(0); transform: scale(1.2); }
-
-        input, select, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #333; background: rgba(0,0,0,0.6); color: white; margin-bottom: 10px; box-sizing: border-box; font-size: 14px; }
-        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .btn-gold { background: var(--gold); color: black; }
-        .btn-blue { background: var(--blue); color: white; }
-        .btn-red { background: var(--red); color: white; }
-        
-        .admin-section { display: none; background: rgba(241, 196, 15, 0.05); padding: 20px; border-radius: 15px; border: 1px dashed var(--gold); margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
-        .card { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; border-left: 5px solid var(--gold); margin-top: 10px; }
-        .card-obs { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; font-size: 12px; color: #bbb; margin-top: 10px; }
-        
-        /* CALCULADORA */
-        .calc-box { background: rgba(46, 204, 113, 0.1); border: 1px solid var(--green); padding: 15px; border-radius: 12px; margin-top: 20px; }
-
-        .tabs { display: flex; gap: 10px; margin-bottom: 15px; }
-        .tab-btn { flex: 1; padding: 10px; background: #222; border: 1px solid #444; color: white; cursor: pointer; border-radius: 5px; font-size: 11px; font-weight: bold; }
-        .active-tab { background: var(--gold); color: black; border-color: var(--gold); }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: var(--dark); 
+            color: white; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            padding: 20px; 
+        }
+        #login-screen { 
+            background: var(--glass); 
+            padding: 40px; 
+            border-radius: 20px; 
+            text-align: center; 
+            border: 1px solid var(--gold); 
+            width: 350px; 
+            margin-top: 10vh; 
+            box-shadow: 0 0 20px rgba(241, 196, 15, 0.2);
+        }
+        #main-app { 
+            display: none; 
+            width: 100%; 
+            max-width: 1100px; 
+        }
+        .coin-widget { 
+            background: linear-gradient(135deg, rgba(241, 196, 15, 0.15), rgba(0,0,0,0.8)); 
+            border: 2px solid var(--gold); 
+            padding: 25px; 
+            border-radius: 15px; 
+            text-align: center; 
+            margin-bottom: 20px; 
+        }
+        .coin-amount { 
+            font-size: 48px; 
+            color: var(--gold); 
+            font-weight: bold; 
+            margin: 10px 0;
+        }
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            border-radius: 8px; 
+            border: 2px solid #333; 
+            background: rgba(0,0,0,0.6); 
+            color: white; 
+            margin-bottom: 15px; 
+            box-sizing: border-box; 
+        }
+        .btn { 
+            width: 100%; 
+            padding: 15px; 
+            border: none; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            text-transform: uppercase; 
+            transition: 0.3s;
+        }
+        .btn-gold { 
+            background: var(--gold); 
+            color: black; 
+        }
+        .btn-gold:hover {
+            background: #d4ac0d;
+            transform: scale(1.02);
+        }
+        .status-cloud {
+            font-size: 12px;
+            color: #2ecc71;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
-        <h2 style="color:var(--gold)">SISTEMA EL MACHO</h2>
-        <input type="text" id="user-login" placeholder="Usuário">
-        <input type="password" id="user-pass" placeholder="Senha">
-        <button class="btn btn-gold" onclick="autenticar()">Acessar</button>
+        <h2 style="color:var(--gold); margin-bottom: 5px;">SISTEMA EL MACHO</h2>
+        <div class="status-cloud">● NUVEM ATIVA</div>
+        <p style="font-size: 14px; color: #888;">Digite seu nome de ADM para entrar</p>
+        <input type="text" id="user-login" placeholder="Ex: Ramon_ADM">
+        <button class="btn btn-gold" onclick="entrar()">Acessar Painel</button>
     </div>
 
     <div id="main-app">
         <div class="coin-widget">
-            <div style="font-size: 11px; letter-spacing: 1px; color: #aaa;">PAGAMENTO ESTIMADO (LVL 1 - 20 SC/H)</div>
-            <div class="coin-amount"><span id="coin-count">0.00</span> <small style="font-size: 12px;">STATE COINS</small></div>
-            <div id="timer-display" style="font-family: monospace; font-size: 16px; color: #fff; margin: 5px 0;">00:00:00</div>
-            <div style="display:flex; gap:10px; justify-content: center;">
-                <button id="btn-ponto" class="btn btn-blue" style="width:140px; padding:8px; font-size:11px;" onclick="togglePonto()">INICIAR TURNO</button>
-                <button class="btn btn-red" style="width:140px; padding:8px; font-size:11px;" onclick="resetarPonto()">RESETAR</button>
-            </div>
+            <div id="user-welcome" style="font-size: 18px; letter-spacing: 1px;">BEM-VINDO</div>
+            <div class="coin-amount"><span id="coin-count">0.00</span> <small style="font-size: 20px;">SC</small></div>
+            <p style="color: #888;">State Coins em tempo real</p>
+            <button class="btn btn-gold" style="width:250px;" onclick="adicionarMoeda()">+1.00 State Coin</button>
         </div>
-
-        <div class="container">
-            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                <div>
-                    <h1 style="color:var(--gold); margin:0;">ADM-EL MACHO <small id="cargo-label" style="font-size:12px; color:white;"></small></h1>
-                    <div class="humor-selector">
-                        <span class="humor-btn" onclick="setHumor(this, 'Disponível')">😇</span>
-                        <span class="humor-btn" onclick="setHumor(this, 'Em Patrulha')">🚔</span>
-                        <span class="humor-btn" onclick="setHumor(this, 'Estressado')">😡</span>
-                        <span class="humor-btn" onclick="setHumor(this, 'Comendo')">🍔</span>
-                        <span id="status-text" style="font-size:10px; color:#888; margin-left:5px;"></span>
-                    </div>
-                </div>
-                <button onclick="location.reload()" style="background:none; border:none; color:var(--red); cursor:pointer; font-weight:bold;">SAIR</button>
-            </div>
-
-            <div id="owner-zone" class="admin-section">
-                <h3 style="margin-top:0">🛠 GESTÃO DO CRIADOR</h3>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                    <div>
-                        <h4 style="margin:0 0 10px 0; font-size:12px;">CADASTRAR STAFF</h4>
-                        <input type="text" id="new-user" placeholder="Login">
-                        <input type="text" id="new-pass" placeholder="Senha">
-                        <button class="btn btn-gold" onclick="criarUsuario()">Criar Acesso</button>
-                        <div id="display-users" style="font-size:11px; margin-top:10px; max-height:60px; overflow-y:auto;"></div>
-                    </div>
-                    <div>
-                        <h4 style="margin:0 0 10px 0; font-size:12px;">MURAL DE AVISOS</h4>
-                        <textarea id="novo-aviso-texto" rows="2" placeholder="Digite o aviso geral..."></textarea>
-                        <button class="btn btn-gold" style="background:#27ae60; color:white;" onclick="publicarAviso()">Atualizar Mural</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid">
-                <div>
-                    <div id="mural" class="container" style="display:none; border: 1px solid var(--gold); background: rgba(241,196,15,0.05); padding: 12px; margin-bottom:15px;">
-                        <b style="color:var(--gold); font-size:13px;">⚠️ AVISO:</b> <span id="texto-aviso" style="font-size:13px;"></span>
-                    </div>
-
-                    <input id="busca" oninput="buscar()" placeholder="Buscar Regra (Código ou Nome)...">
-                    <div id="resultado"></div>
-
-                    <div class="container" style="margin-top:20px; background:rgba(255,255,255,0.02);">
-                        <div class="tabs">
-                            <button class="tab-btn active-tab" id="btn-tab-prisao" onclick="setLogMode('prisao')">LOG PRISÃO</button>
-                            <button class="tab-btn" id="btn-tab-ban" onclick="setLogMode('ban')">SOLICITAR BAN</button>
-                        </div>
-                        <input type="text" id="log-nome" placeholder="Nome do Jogador">
-                        <select id="log-servidor">
-                            <option value="" disabled selected>Servidor</option>
-                            <option value="Madera-Br">Madera-Br</option><option value="Alameda-Br">Alameda-Br</option><option value="Lynwood-Br">Lynwood-Br</option><option value="Malibu-Br">Malibu-Br</option><option value="Bell-Br">Bell-Br</option><option value="Lomita-Br">Lomita-Br</option><option value="Glendale-Br">Glendale-Br</option><option value="Laguna-Br">Laguna-Br</option><option value="Santa Cruz-Br">Santa Cruz-Br</option><option value="Redland-Br">Redland-Br</option><option value="Dixon-Br">Dixon-Br</option><option value="Homeland-Br">Homeland-Br</option><option value="Hills-Br">Hills-Br</option><option value="Fortuna-Br">Fortuna-Br</option><option value="Covina-Br">Covina-Br</option><option value="Chico-Br">Chico-Br</option><option value="Orange-Br">Orange-Br</option><option value="Yuba-Br">Yuba-Br</option><option value="Lincoln-Br">Lincoln-Br</option><option value="Pablo-Br">Pablo-Br</option><option value="Forest-Br">Forest-Br</option><option value="Napa-Br">Napa-Br</option><option value="Solano-Br">Solano-Br</option><option value="Barry-Br">Barry-Br</option><option value="Hemet-Br">Hemet-Br</option><option value="Wasco-Br">Wasco-Br</option><option value="Mesa-Br">Mesa-Br</option>
-                        </select>
-                        <input type="text" id="log-regra" placeholder="Código da Regra">
-                        <input type="text" id="log-motivo" placeholder="Motivo">
-                        <input type="text" id="log-tempo" placeholder="Tempo">
-                        <input type="text" id="log-evidencia" placeholder="Link da Evidência">
-                        <button id="main-log-btn" class="btn btn-gold" onclick="copiarLog()">Copiar Log</button>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="container" style="background:rgba(0,0,0,0.4);">
-                        <h4 style="text-align:center; color:var(--gold); margin:0 0 10px 0;">🕒 ESCALA</h4>
-                        <div id="lista-turnos" style="font-size:11px;"></div>
-                    </div>
-
-                    <div class="calc-box">
-                        <h4 style="margin-top:0; color:var(--green); font-size:12px;">🔢 CONVERSOR DE TEMPO</h4>
-                        <input type="number" id="calc-dias" placeholder="Dias">
-                        <input type="number" id="calc-horas" placeholder="Horas" oninput="converterTempo()">
-                        <div id="calc-resultado" style="font-weight:bold; color:var(--green); text-align:center; font-size:15px; margin:5px 0;">0 min</div>
-                        <button class="btn" style="background:var(--green); color:black; padding:8px; font-size:11px;" onclick="aplicarTempoCalc()">USAR NA LOG</button>
-                    </div>
-                </div>
-            </div>
+        
+        <div style="text-align: center;">
+            <button class="btn" style="background: #222; color: #888; width: 150px;" onclick="location.reload()">Sair do Sistema</button>
         </div>
     </div>
 
-    <script src="teste.js"></script>
-    <script>
-        let logMode = 'prisao';
-        let tempoSegundos = 0;
-        let timerAtivo = false;
-        let intervalo;
-        const DONO = { user: "ELMACHO", pass: "DONO123" };
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        function autenticar() {
-            const u = document.getElementById('user-login').value;
-            const p = document.getElementById('user-pass').value;
-            const users = JSON.parse(localStorage.getItem('usuarios_staff')) || [];
-            if(u === DONO.user && p === DONO.pass) entrar("CRIADOR", true);
-            else {
-                const enc = users.find(a => a.login === u && a.senha === p);
-                if(enc) entrar(u, false);
-                else alert("Acesso Negado!");
+        // CONFIGURAÇÃO VINDA DO SEU CONSOLE FIREBASE
+        const firebaseConfig = {
+          apiKey: "AIzaSyBT61_LDGahjUVL7wSuQ0m960QLgTvcFus",
+          authDomain: "painel-onestate.firebaseapp.com",
+          projectId: "painel-onestate",
+          storageBucket: "painel-onestate.firebasestorage.app",
+          messagingSenderId: "943105366215",
+          appId: "1:943105366215:web:2b024ad3df731f2bff06e2"
+        };
+
+        // INICIALIZANDO O BANCO
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // FUNÇÃO PARA ENTRAR
+        window.entrar = async () => {
+            const nome = document.getElementById('user-login').value.trim().toUpperCase();
+            if(!nome) return alert("Por favor, digite seu nome!");
+            
+            window.usuarioAtual = nome;
+            const userRef = doc(db, "usuarios", nome);
+            const userSnap = await getDoc(userRef);
+
+            // SE O USUÁRIO NÃO EXISTIR NO BANCO, CRIA UM NOVO
+            if (!userSnap.exists()) {
+                await setDoc(userRef, { moedas: 0, cargo: "ADM" });
             }
-        }
 
-        function entrar(nome, isOwner) {
+            // TROCA DE TELA
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'block';
-            document.getElementById('cargo-label').innerText = `| Online: ${nome}`;
-            const av = localStorage.getItem('aviso_mural');
-            if(av) { document.getElementById('mural').style.display = 'block'; document.getElementById('texto-aviso').innerText = av; }
-            if(isOwner) { document.getElementById('owner-zone').style.display = 'block'; listarUsuarios(); }
-            renderizarTurnos();
-        }
+            document.getElementById('user-welcome').innerText = "ADM: " + nome;
 
-        // MOEDAS E TIMER
-        function togglePonto() {
-            const btn = document.getElementById('btn-ponto');
-            if(!timerAtivo) {
-                timerAtivo = true;
-                btn.innerText = "PAUSAR TURNO"; btn.className = "btn btn-red";
-                intervalo = setInterval(() => { tempoSegundos++; atualizarDisplay(); }, 1000);
-            } else {
-                timerAtivo = false;
-                btn.innerText = "RETOMAR TURNO"; btn.className = "btn btn-blue";
-                clearInterval(intervalo);
+            // FICA "OUVINDO" O BANCO EM TEMPO REAL
+            onSnapshot(userRef, (doc) => {
+                if (doc.exists()) {
+                    document.getElementById('coin-count').innerText = doc.data().moedas.toFixed(2);
+                }
+            });
+        };
+
+        // FUNÇÃO PARA ADICIONAR MOEDA NO GOOGLE
+        window.adicionarMoeda = async () => {
+            const userRef = doc(db, "usuarios", window.usuarioAtual);
+            try {
+                await updateDoc(userRef, { 
+                    moedas: increment(1) 
+                });
+            } catch (e) {
+                console.error("Erro ao salvar:", e);
             }
-        }
-
-        function atualizarDisplay() {
-            const h = Math.floor(tempoSegundos / 3600).toString().padStart(2, '0');
-            const m = Math.floor((tempoSegundos % 3600) / 60).toString().padStart(2, '0');
-            const s = (tempoSegundos % 60).toString().padStart(2, '0');
-            document.getElementById('timer-display').innerText = `${h}:${m}:${s}`;
-            const moedas = (tempoSegundos * (20 / 3600)).toFixed(2);
-            document.getElementById('coin-count').innerText = moedas;
-        }
-
-        function resetarPonto() {
-            if(confirm("Zerar moedas e tempo?")) {
-                clearInterval(intervalo); tempoSegundos = 0; timerAtivo = false;
-                document.getElementById('btn-ponto').innerText = "INICIAR TURNO";
-                document.getElementById('btn-ponto').className = "btn btn-blue";
-                atualizarDisplay();
-            }
-        }
-
-        // HUMOR
-        function setHumor(btn, status) {
-            document.querySelectorAll('.humor-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById('status-text').innerText = status;
-        }
-
-        // CALC
-        function converterTempo() {
-            const d = parseInt(document.getElementById('calc-dias').value) || 0;
-            const h = parseInt(document.getElementById('calc-horas').value) || 0;
-            const total = (d * 1440) + (h * 60);
-            document.getElementById('calc-resultado').innerText = total + " min";
-            return total;
-        }
-
-        function aplicarTempoCalc() {
-            const t = converterTempo();
-            if(t > 0) document.getElementById('log-tempo').value = t + " min";
-        }
-
-        // BUSCA E LOGS
-        function buscar() {
-            const t = document.getElementById('busca').value.toUpperCase();
-            const res = document.getElementById('resultado');
-            if(!t) { res.innerHTML = ""; return; }
-            const r = regras.find(i => i.codigo === t || (i.nome && i.nome.toUpperCase().includes(t)));
-            if(r) {
-                res.innerHTML = `<div class="card"><strong>${r.nome}</strong> [${r.codigo}]<br><small>${r.punicao} | ${r.tempo}</small><div class="card-obs"><b>OBS:</b> ${r.obs || '-'}</div></div>`;
-                document.getElementById('log-regra').value = r.codigo; 
-                document.getElementById('log-tempo').value = r.tempo;
-            }
-        }
-
-        function setLogMode(mode) {
-            logMode = mode;
-            document.getElementById('btn-tab-prisao').className = mode === 'prisao' ? 'tab-btn active-tab' : 'tab-btn';
-            document.getElementById('btn-tab-ban').className = mode === 'ban' ? 'tab-btn active-tab' : 'tab-btn';
-            document.getElementById('main-log-btn').innerText = mode === 'prisao' ? 'Copiar Log Prisão' : 'Copiar Solicitação de Ban';
-        }
-
-        function copiarLog() {
-            const nome = document.getElementById('log-nome').value, serv = document.getElementById('log-servidor').value, regra = document.getElementById('log-regra').value, mot = document.getElementById('log-motivo').value, tempo = document.getElementById('log-tempo').value, evi = document.getElementById('log-evidencia').value;
-            if(!serv) return alert("Selecione o Servidor!");
-            let texto = logMode === 'prisao' ? `PRISÃO\nNOME: ${nome}\nSERVIDOR: ${serv}\nREGRA: ${regra}\nMOTIVO: ${mot}\nTEMPO: ${tempo}\n\nAplicar e Fazer a LOG!\n\nEVIDÊNCIA: ${evi}` : `SOLICITO BANIMENTO\nNOME: ${nome}\nSERVIDOR: ${serv}\nMOTIVO: ${mot}\nREGRA: ${regra}\nTEMPO: ${tempo}\n\nAplicar e fazer a log\n\nEvidência: ${evi}`;
-            navigator.clipboard.writeText(texto); alert("Copiado!");
-        }
-
-        // GESTÃO
-        function publicarAviso() { localStorage.setItem('aviso_mural', document.getElementById('novo-aviso-texto').value); location.reload(); }
-        function criarUsuario() {
-            let u = document.getElementById('new-user').value, p = document.getElementById('new-pass').value;
-            let users = JSON.parse(localStorage.getItem('usuarios_staff')) || [];
-            users.push({login: u, senha: p}); localStorage.setItem('usuarios_staff', JSON.stringify(users)); listarUsuarios();
-        }
-        function listarUsuarios() {
-            let users = JSON.parse(localStorage.getItem('usuarios_staff')) || [];
-            document.getElementById('display-users').innerHTML = users.map((a, i) => `👤 ${a.login} <span onclick="remover(${i})" style="color:red;cursor:pointer">[X]</span><br>`).join('');
-        }
-        function remover(i) {
-            let users = JSON.parse(localStorage.getItem('usuarios_staff')) || [];
-            users.splice(i, 1); localStorage.setItem('usuarios_staff', JSON.stringify(users)); listarUsuarios();
-        }
-        function renderizarTurnos() {
-            const h = new Date().getHours(), ts = ["00:00-03:00","03:00-06:00","06:00-09:00","09:00-12:00","12:00-15:00","15:00-18:00","18:00-21:00","21:00-00:00"];
-            document.getElementById('lista-turnos').innerHTML = ts.map(t => {
-                const s = parseInt(t.split(':')[0]); const is = h >= s && h < s+3;
-                return `<div style="padding:4px; border-bottom:1px solid #333; ${is?'color:var(--gold);font-weight:bold;':''}"> ${t} ${is?'●':''}</div>`;
-            }).join('');
-        }
+        };
     </script>
 </body>
 </html>
