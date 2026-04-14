@@ -5,102 +5,126 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel OneState - EL MACHO TECH</title>
     <style>
-        :root { --gold: #f1c40f; --dark: #0a0a0a; --glass: rgba(15, 15, 15, 0.95); --red: #ff4d4d; --blue: #3498db; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: white; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        :root { --gold: #f1c40f; --dark: #0a0a0a; --glass: rgba(15, 15, 15, 0.98); --red: #ff4d4d; --blue: #3498db; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: white; margin: 0; padding: 20px; }
         
         /* LOGIN */
-        #login-screen { background: var(--glass); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid var(--gold); width: 350px; margin-top: 10vh; box-shadow: 0 0 30px rgba(241, 196, 15, 0.2); }
+        #login-screen { background: var(--glass); padding: 40px; border-radius: 20px; text-align: center; border: 2px solid var(--gold); width: 350px; margin: 10vh auto; box-shadow: 0 0 30px rgba(241, 196, 15, 0.2); }
         #login-screen input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #111; color: white; margin-bottom: 20px; box-sizing: border-box; }
 
-        /* PAINEL COMPLETO */
-        #main-app { display: none; width: 100%; max-width: 1000px; }
-        .container { background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* APP PRINCIPAL */
+        #main-app { display: none; max-width: 1100px; margin: 0 auto; }
+        .container { background: var(--glass); padding: 25px; border-radius: 15px; border: 1px solid #333; }
         
-        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 25px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 20px; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         
-        .card { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid #222; }
-        .card h3 { margin: 0 0 15px 0; color: var(--gold); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        .card { background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid #222; }
+        .card h3 { margin: 0 0 15px 0; color: var(--gold); text-transform: uppercase; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 5px; }
         
-        .stats { font-size: 38px; font-weight: bold; margin: 10px 0; text-align: center; }
-        .stats span { color: var(--gold); }
+        /* REGRAS E OBS */
+        .rules-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+        .rules-table td { padding: 8px; border-bottom: 1px solid #222; }
+        .rules-table tr:hover { background: rgba(241, 196, 15, 0.05); }
+        
+        .obs-area { width: 100%; height: 80px; background: #000; color: #aaa; border: 1px solid #333; border-radius: 5px; padding: 10px; margin-top: 10px; font-size: 12px; resize: none; }
 
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 11px; color: #888; margin-bottom: 5px; text-transform: uppercase; }
-        input, select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
+        /* STATUS */
+        .big-stats { font-size: 42px; font-weight: bold; text-align: center; margin: 15px 0; }
+        .big-stats span { color: var(--gold); }
 
-        .btn { width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-top: 5px; }
+        /* BOTÕES E INPUTS */
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-top: 8px; }
         .btn-gold { background: var(--gold); color: #000; }
         .btn-red { background: var(--red); color: #fff; }
         .btn-blue { background: var(--blue); color: #fff; }
-        .btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
+        input, select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #333; background: #000; color: white; margin-bottom: 10px; box-sizing: border-box; }
 
-        .log-box { margin-top: 25px; background: #000; border: 1px solid #222; border-radius: 10px; padding: 15px; height: 180px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 12px; }
-        .log-entry { border-bottom: 1px solid #111; padding: 5px 0; display: flex; justify-content: space-between; }
+        /* HISTÓRICO COM HORÁRIOS */
+        .history-container { margin-top: 20px; background: #000; border: 1px solid #222; border-radius: 10px; padding: 15px; }
+        .history-list { height: 200px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 13px; }
+        .log-line { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #111; }
+        .log-time { color: #555; margin-right: 15px; }
     </style>
 </head>
 <body>
 
     <div id="login-screen">
         <h1 style="color:var(--gold); margin:0;">EL MACHO</h1>
-        <p style="color:#666; font-size: 12px; margin-bottom: 25px;">SISTEMA DE GESTÃO - LOGIN</p>
-        <input type="text" id="user-login" placeholder="NOME DO ADM">
-        <button class="btn btn-gold" onclick="entrar()">ENTRAR NO PAINEL</button>
+        <p style="color:#666; font-size: 11px; margin-bottom: 25px; letter-spacing: 2px;">PAINEL ADMINISTRATIVO</p>
+        <input type="text" id="user-login" placeholder="IDENTIFICAÇÃO DO ADM">
+        <button class="btn btn-gold" onclick="entrar()">AUTENTICAR</button>
     </div>
 
     <div id="main-app">
         <div class="container">
             <div class="header">
                 <div>
-                    <span style="color:#666">ADM CONECTADO:</span> 
-                    <span id="display-name" style="color:var(--gold); font-weight:bold;">---</span>
+                    <span style="color:#555">SESSÃO ATIVA:</span> 
+                    <span id="display-name" style="color:var(--gold); font-weight:bold; margin-left:10px;">---</span>
                 </div>
-                <button onclick="location.reload()" style="background:none; border:1px solid #444; color:#444; padding:5px 10px; cursor:pointer; border-radius:4px;">SAIR</button>
+                <button onclick="location.reload()" style="background:none; border:1px solid #333; color:#555; padding:5px 15px; cursor:pointer; border-radius:4px; font-size:10px;">DESCONECTAR</button>
             </div>
 
             <div class="grid">
-                <div class="card">
-                    <h3>Saldo State Coins</h3>
-                    <div class="stats"><span id="coin-count">0.00</span> <small style="font-size:14px; color:#444">SC</small></div>
-                    <div class="input-group">
-                        <label>Tipo de Recebimento</label>
+                <div class="column">
+                    <div class="card">
+                        <h3>Gestão de State Coins</h3>
+                        <div class="big-stats"><span id="coin-count">0.00</span> <small style="font-size:12px; color:#333">SC</small></div>
                         <select id="bonus-val">
-                            <option value="1">Salário Padrão (+1.00 SC)</option>
-                            <option value="10">Bônus de Meta (+10.00 SC)</option>
-                            <option value="50">Prêmio Especial (+50.00 SC)</option>
+                            <option value="1">Receber Salário (+1.00 SC)</option>
+                            <option value="10">Bônus de Desempenho (+10.00 SC)</option>
+                            <option value="50">Premiação de Evento (+50.00 SC)</option>
                         </select>
+                        <button class="btn btn-gold" onclick="processarAcao('moedas', 'bonus-val', 'RECEBIMENTO')">Adicionar Saldo</button>
                     </div>
-                    <button class="btn btn-gold" onclick="processarAcao('moedas', 'bonus-val', 'Recebimento')">Confirmar Valor</button>
+
+                    <div class="card" style="margin-top:20px;">
+                        <h3>Tabela de Regras / Punições</h3>
+                        <table class="rules-table">
+                            <tr><td>Falta em Reunião</td><td style="color:var(--red)">-10 SC</td></tr>
+                            <tr><td>Má Conduta / Desrespeito</td><td style="color:var(--red)">-20 SC</td></tr>
+                            <tr><td>Erro de Patrulha / Protocolo</td><td style="color:var(--red)">-5 SC</td></tr>
+                            <tr><td>Uso Indevido de Equipamento</td><td style="color:var(--red)">-15 SC</td></tr>
+                        </table>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <h3>Aplicar Punição</h3>
-                    <div class="input-group">
-                        <label>Motivo da Multa</label>
-                        <input type="text" id="punish-reason" placeholder="Ex: Má conduta em ação">
-                    </div>
-                    <div class="input-group">
-                        <label>Valor da Punição</label>
+                <div class="column">
+                    <div class="card">
+                        <h3>Aplicar Penalidade</h3>
+                        <label style="font-size:10px; color:#555">MOTIVO DA INFRAÇÃO</label>
+                        <input type="text" id="punish-reason" placeholder="Descreva o motivo...">
+                        <label style="font-size:10px; color:#555">VALOR DA MULTA</label>
                         <select id="punish-val">
-                            <option value="-5">Multa Leve (-5.00 SC)</option>
-                            <option value="-20">Multa Grave (-20.00 SC)</option>
-                            <option value="-50">Multa Gravíssima (-50.00 SC)</option>
+                            <option value="-5">Punição Leve (-5.00 SC)</option>
+                            <option value="-10">Punição Média (-10.00 SC)</option>
+                            <option value="-20">Punição Grave (-20.00 SC)</option>
+                            <option value="-50">Punição Gravíssima (-50.00 SC)</option>
                         </select>
+                        <button class="btn btn-red" onclick="processarAcao('moedas', 'punish-val', 'MULTA')">Confirmar Punição</button>
                     </div>
-                    <button class="btn btn-red" onclick="processarAcao('moedas', 'punish-val', 'Punição')">Aplicar Multa</button>
+
+                    <div class="card" style="margin-top:20px;">
+                        <h3>Logs de Atividade</h3>
+                        <div class="big-stats" style="color:var(--blue)">TOTAL: <span id="log-count" style="color:#fff">0</span></div>
+                        <button class="btn btn-blue" onclick="processarAcao('logs', null, 'LOG DE TRABALHO')">Registrar Novo Log</button>
+                    </div>
                 </div>
             </div>
 
             <div class="card" style="margin-top:20px;">
-                <h3>Controle de Atividade (Logs)</h3>
-                <div style="display:flex; justify-content: space-around; align-items: center;">
-                    <div class="stats" style="color:var(--blue)">TOTAL: <span id="log-count" style="color:#fff">0</span></div>
-                    <button class="btn btn-blue" style="width:250px" onclick="processarAcao('logs', null, 'Atividade')">Registrar Novo Log</button>
-                </div>
+                <h3>Observações Gerais (Instruções)</h3>
+                <textarea class="obs-area" readonly>1. Todo registro deve ser acompanhado de prova caso solicitado.
+2. Multas superiores a 50 SC precisam de aprovação da gerência.
+3. O saldo é atualizado em tempo real com o banco de dados Google Firebase.</textarea>
             </div>
 
-            <div class="log-box" id="history">
-                <div style="color:#333; text-align:center; margin-top:70px;">AGUARDANDO PRIMEIRA AÇÃO DO ADM...</div>
+            <div class="history-container">
+                <h3 style="margin:0 0 10px 0; font-size: 12px; color: #444;">LOGS DO SISTEMA (HORÁRIOS EM TEMPO REAL)</h3>
+                <div class="history-list" id="history">
+                    <div style="text-align:center; color:#222; margin-top:80px;">SISTEMA SINCRONIZADO. AGUARDANDO AÇÕES...</div>
+                </div>
             </div>
         </div>
     </div>
@@ -123,7 +147,7 @@
 
         window.entrar = async () => {
             const nome = document.getElementById('user-login').value.trim().toUpperCase();
-            if(!nome) return alert("INSIRA SEU NOME!");
+            if(!nome) return alert("DIGITE O NOME DO ADM!");
             
             window.usuarioAtual = nome;
             const userRef = doc(db, "usuarios", nome);
@@ -148,12 +172,13 @@
         window.processarAcao = async (campo, inputId, tipo) => {
             const userRef = doc(db, "usuarios", window.usuarioAtual);
             let valor = 1;
-            let motivo = "";
+            let infoAdicional = "";
 
             if(inputId) {
                 valor = parseFloat(document.getElementById(inputId).value);
-                if(tipo === 'Punição') {
-                    motivo = " | MOTIVO: " + (document.getElementById('punish-reason').value || "Não informado");
+                if(tipo === 'MULTA') {
+                    const motivo = document.getElementById('punish-reason').value || "Sem motivo especificado";
+                    infoAdicional = ` | MOTIVO: ${motivo}`;
                 }
             }
 
@@ -161,16 +186,20 @@
                 await updateDoc(userRef, { [campo]: increment(valor) });
                 
                 const history = document.getElementById('history');
-                if(history.innerText.includes("AGUARDANDO")) history.innerHTML = "";
+                if(history.innerText.includes("SINCRONIZADO")) history.innerHTML = "";
                 
+                const time = new Date().toLocaleTimeString('pt-BR');
                 const div = document.createElement('div');
-                div.className = "log-entry";
-                div.innerHTML = `<span>[${new Date().toLocaleTimeString()}] ${tipo}${motivo}</span> <span style="color:${valor > 0 ? '#2ecc71' : '#ff4d4d'}">${valor > 0 ? '+'+valor : valor}</span>`;
+                div.className = "log-line";
+                div.innerHTML = `
+                    <span><span class="log-time">[${time}]</span> <strong>${tipo}</strong>${infoAdicional}</span>
+                    <span style="color:${valor > 0 ? '#2ecc71' : '#ff4d4d'}">${valor > 0 ? '+'+valor : valor} SC</span>
+                `;
                 history.prepend(div);
                 
-                if(tipo === 'Punição') document.getElementById('punish-reason').value = "";
+                if(tipo === 'MULTA') document.getElementById('punish-reason').value = "";
             } catch (e) {
-                alert("ERRO AO SALVAR NO GOOGLE!");
+                alert("ERRO DE CONEXÃO COM O BANCO DE DADOS!");
             }
         };
     </script>
