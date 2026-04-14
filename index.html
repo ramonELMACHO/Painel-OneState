@@ -8,25 +8,25 @@
         :root { --gold: #f1c40f; --dark: #0a0a0a; --glass: rgba(15, 15, 15, 0.95); --red: #ff4d4d; --blue: #3498db; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: white; margin: 0; padding: 20px; display: flex; justify-content: center; }
         
-        /* TELA DE LOGIN */
+        /* LOGIN */
         #login-screen { background: var(--glass); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid var(--gold); width: 350px; margin-top: 10vh; box-shadow: 0 0 30px rgba(241, 196, 15, 0.2); }
         #login-screen input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #111; color: white; margin-bottom: 20px; box-sizing: border-box; }
 
-        /* PAINEL PRINCIPAL */
+        /* PAINEL COMPLETO */
         #main-app { display: none; width: 100%; max-width: 1000px; }
         .container { background: var(--glass); padding: 30px; border-radius: 20px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 15px; margin-bottom: 25px; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         
-        .card { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid #222; position: relative; }
-        .card h3 { margin-top: 0; color: var(--gold); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .card { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid #222; }
+        .card h3 { margin: 0 0 15px 0; color: var(--gold); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #333; padding-bottom: 5px; }
         
-        .stats { font-size: 38px; font-weight: bold; margin: 10px 0; color: #fff; }
+        .stats { font-size: 38px; font-weight: bold; margin: 10px 0; text-align: center; }
         .stats span { color: var(--gold); }
 
         .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 12px; color: #888; margin-bottom: 5px; text-transform: uppercase; }
+        label { display: block; font-size: 11px; color: #888; margin-bottom: 5px; text-transform: uppercase; }
         input, select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
 
         .btn { width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; text-transform: uppercase; margin-top: 5px; }
@@ -35,7 +35,7 @@
         .btn-blue { background: var(--blue); color: #fff; }
         .btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
 
-        .log-box { margin-top: 25px; background: #000; border: 1px solid #222; border-radius: 10px; padding: 15px; height: 200px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 13px; }
+        .log-box { margin-top: 25px; background: #000; border: 1px solid #222; border-radius: 10px; padding: 15px; height: 180px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 12px; }
         .log-entry { border-bottom: 1px solid #111; padding: 5px 0; display: flex; justify-content: space-between; }
     </style>
 </head>
@@ -43,64 +43,64 @@
 
     <div id="login-screen">
         <h1 style="color:var(--gold); margin:0;">EL MACHO</h1>
-        <p style="color:#666; font-size: 12px; margin-bottom: 25px;">CONTROL PANEL v2.0</p>
-        <input type="text" id="user-login" placeholder="NOME DO ADM (EX: RAMON)">
-        <button class="btn btn-gold" onclick="entrar()">ACESSAR SISTEMA</button>
+        <p style="color:#666; font-size: 12px; margin-bottom: 25px;">SISTEMA DE GESTÃO - LOGIN</p>
+        <input type="text" id="user-login" placeholder="NOME DO ADM">
+        <button class="btn btn-gold" onclick="entrar()">ENTRAR NO PAINEL</button>
     </div>
 
     <div id="main-app">
         <div class="container">
             <div class="header">
                 <div>
-                    <span style="color:#666">AUTENTICADO:</span> 
+                    <span style="color:#666">ADM CONECTADO:</span> 
                     <span id="display-name" style="color:var(--gold); font-weight:bold;">---</span>
                 </div>
-                <button onclick="location.reload()" style="background:none; border:1px solid #444; color:#444; padding:5px 10px; cursor:pointer; border-radius:4px;">LOGOUT</button>
+                <button onclick="location.reload()" style="background:none; border:1px solid #444; color:#444; padding:5px 10px; cursor:pointer; border-radius:4px;">SAIR</button>
             </div>
 
             <div class="grid">
-                <div class="card" style="border-left: 5px solid var(--gold);">
-                    <h3>Carteira Virtual</h3>
+                <div class="card">
+                    <h3>Saldo State Coins</h3>
                     <div class="stats"><span id="coin-count">0.00</span> <small style="font-size:14px; color:#444">SC</small></div>
                     <div class="input-group">
-                        <label>Adicionar Saldo</label>
+                        <label>Tipo de Recebimento</label>
                         <select id="bonus-val">
-                            <option value="1">Salário (+1.00 SC)</option>
-                            <option value="10">Bônus (+10.00 SC)</option>
-                            <option value="50">Prêmio (+50.00 SC)</option>
+                            <option value="1">Salário Padrão (+1.00 SC)</option>
+                            <option value="10">Bônus de Meta (+10.00 SC)</option>
+                            <option value="50">Prêmio Especial (+50.00 SC)</option>
                         </select>
                     </div>
-                    <button class="btn btn-gold" onclick="processarAcao('moedas', 'bonus-val', 'Adição de Saldo')">Confirmar Recebimento</button>
+                    <button class="btn btn-gold" onclick="processarAcao('moedas', 'bonus-val', 'Recebimento')">Confirmar Valor</button>
                 </div>
 
-                <div class="card" style="border-left: 5px solid var(--red);">
-                    <h3>Central de Multas</h3>
+                <div class="card">
+                    <h3>Aplicar Punição</h3>
                     <div class="input-group">
-                        <label>Motivo da Punição</label>
-                        <input type="text" id="punish-reason" placeholder="Ex: Erro em patrulha">
+                        <label>Motivo da Multa</label>
+                        <input type="text" id="punish-reason" placeholder="Ex: Má conduta em ação">
                     </div>
                     <div class="input-group">
-                        <label>Valor da Multa</label>
+                        <label>Valor da Punição</label>
                         <select id="punish-val">
-                            <option value="-5">Leve (-5.00 SC)</option>
-                            <option value="-20">Grave (-20.00 SC)</option>
-                            <option value="-50">Gravíssima (-50.00 SC)</option>
+                            <option value="-5">Multa Leve (-5.00 SC)</option>
+                            <option value="-20">Multa Grave (-20.00 SC)</option>
+                            <option value="-50">Multa Gravíssima (-50.00 SC)</option>
                         </select>
                     </div>
-                    <button class="btn btn-red" onclick="processarAcao('moedas', 'punish-val', 'Punição Aplicada')">Aplicar Multa</button>
+                    <button class="btn btn-red" onclick="processarAcao('moedas', 'punish-val', 'Punição')">Aplicar Multa</button>
                 </div>
             </div>
 
-            <div class="card" style="margin-top:20px; border-left: 5px solid var(--blue);">
-                <h3>Registro de Trabalho</h3>
+            <div class="card" style="margin-top:20px;">
+                <h3>Controle de Atividade (Logs)</h3>
                 <div style="display:flex; justify-content: space-around; align-items: center;">
-                    <div class="stats" style="color:var(--blue)">LOGS: <span id="log-count" style="color:#fff">0</span></div>
-                    <button class="btn btn-blue" style="width:200px" onclick="processarAcao('logs', null, 'Log de Atividade')">Registrar Atividade</button>
+                    <div class="stats" style="color:var(--blue)">TOTAL: <span id="log-count" style="color:#fff">0</span></div>
+                    <button class="btn btn-blue" style="width:250px" onclick="processarAcao('logs', null, 'Atividade')">Registrar Novo Log</button>
                 </div>
             </div>
 
             <div class="log-box" id="history">
-                <div style="color:#333; text-align:center; margin-top:80px;">SISTEMA PRONTO PARA REGISTRO</div>
+                <div style="color:#333; text-align:center; margin-top:70px;">AGUARDANDO PRIMEIRA AÇÃO DO ADM...</div>
             </div>
         </div>
     </div>
@@ -123,7 +123,7 @@
 
         window.entrar = async () => {
             const nome = document.getElementById('user-login').value.trim().toUpperCase();
-            if(!nome) return alert("INSIRA SEU NOME DE ADM");
+            if(!nome) return alert("INSIRA SEU NOME!");
             
             window.usuarioAtual = nome;
             const userRef = doc(db, "usuarios", nome);
@@ -147,13 +147,13 @@
 
         window.processarAcao = async (campo, inputId, tipo) => {
             const userRef = doc(db, "usuarios", window.usuarioAtual);
-            let valor = 1; // Default para logs
+            let valor = 1;
             let motivo = "";
 
             if(inputId) {
                 valor = parseFloat(document.getElementById(inputId).value);
-                if(tipo === 'Punição Aplicada') {
-                    motivo = " - " + (document.getElementById('punish-reason').value || "Sem motivo");
+                if(tipo === 'Punição') {
+                    motivo = " | MOTIVO: " + (document.getElementById('punish-reason').value || "Não informado");
                 }
             }
 
@@ -161,16 +161,16 @@
                 await updateDoc(userRef, { [campo]: increment(valor) });
                 
                 const history = document.getElementById('history');
-                if(history.innerText.includes("PRONTO")) history.innerHTML = "";
+                if(history.innerText.includes("AGUARDANDO")) history.innerHTML = "";
                 
                 const div = document.createElement('div');
                 div.className = "log-entry";
-                div.innerHTML = `<span>[${new Date().toLocaleTimeString()}] ${tipo}${motivo}</span> <span style="color:var(--gold)">${valor > 0 ? '+'+valor : valor}</span>`;
+                div.innerHTML = `<span>[${new Date().toLocaleTimeString()}] ${tipo}${motivo}</span> <span style="color:${valor > 0 ? '#2ecc71' : '#ff4d4d'}">${valor > 0 ? '+'+valor : valor}</span>`;
                 history.prepend(div);
                 
-                if(tipo === 'Punição Aplicada') document.getElementById('punish-reason').value = "";
+                if(tipo === 'Punição') document.getElementById('punish-reason').value = "";
             } catch (e) {
-                alert("ERRO DE SINCRONIZAÇÃO");
+                alert("ERRO AO SALVAR NO GOOGLE!");
             }
         };
     </script>
