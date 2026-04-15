@@ -4,49 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel OneState - ADM-EL MACHO</title>
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Suas credenciais integradas
+        const firebaseConfig = {
+            apiKey: "AIzaSyBT61_LDGahjUVL7wSuQOm960QLgTvcFus",
+            authDomain: "painel-onestate.firebaseapp.com",
+            projectId: "painel-onestate",
+            storageBucket: "painel-onestate.firebasestorage.app",
+            messagingSenderId: "943105366215",
+            appId: "1:943105366215:web:2b024ad3df731f2bff06e2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // FUNÇÕES GLOBAIS DE ACESSO
+        window.autenticar = async function() {
+            const u = document.getElementById('user-login').value.toUpperCase();
+            const p = document.getElementById('user-pass').value;
+
+            if (u === "ELMACHO" && p === "123") {
+                entrarNoPainel(u);
+                return;
+            }
+
+            const docRef = doc(db, "usuarios", u);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists() && docSnap.data().senha === p) {
+                entrarNoPainel(u);
+            } else {
+                alert("Acesso Negado! Verifique login e senha.");
+            }
+        };
+
+        window.criarUsuario = async function() {
+            const u = document.getElementById('new-user').value.toUpperCase();
+            const p = document.getElementById('new-pass').value;
+            if(!u || !p) { alert("Preencha tudo!"); return; }
+
+            await setDoc(doc(db, "usuarios", u), { login: u, senha: p });
+            alert("ADM Criado na Nuvem!");
+            document.getElementById('new-user').value = "";
+            document.getElementById('new-pass').value = "";
+            listarUsuarios();
+        };
+
+        window.listarUsuarios = async function() {
+            const querySnapshot = await getDocs(collection(db, "usuarios"));
+            let html = "";
+            querySnapshot.forEach((doc) => {
+                html += `<div style="margin-bottom:5px;">👤 ${doc.id} <span onclick="removerUsuario('${doc.id}')" style="color:red;cursor:pointer;float:right;font-weight:bold;">[X]</span></div>`;
+            });
+            document.getElementById('display-users').innerHTML = html || "Nenhum ADM cadastrado.";
+        };
+
+        window.removerUsuario = async function(id) {
+            if(confirm("Remover acesso de " + id + "?")) {
+                await deleteDoc(doc(db, "usuarios", id));
+                listarUsuarios();
+            }
+        };
+
+        function entrarNoPainel(usuario) {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
+            document.getElementById('cargo-label').innerText = `| Online: ${usuario}`;
+            document.getElementById('admin-panel-box').style.display = (usuario === "ELMACHO") ? "block" : "none";
+            renderizarEscala();
+            if(usuario === "ELMACHO") listarUsuarios();
+        }
+    </script>
+
     <style>
         :root { --gold: #f1c40f; --dark: #0a0a0a; --glass: rgba(15, 15, 15, 0.95); --red: #e74c3c; --green: #2ecc71; --blue: #3498db; --yellow: #f39c12; }
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: var(--dark) url('http://googleusercontent.com/image_collection/image_retrieval/11042365248659034183_0') no-repeat center center fixed;
-            background-size: cover;
-            color: white; margin: 0; display: flex; justify-content: center; padding: 20px;
-        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--dark) url('http://googleusercontent.com/image_collection/image_retrieval/11042365248659034183_0') no-repeat center center fixed; background-size: cover; color: white; margin: 0; display: flex; justify-content: center; padding: 20px; }
         #login-screen { background: var(--glass); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid var(--gold); width: 350px; margin-top: 10vh; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
         #main-app { display: none; width: 100%; max-width: 1100px; }
         .container { background: rgba(10, 10, 10, 0.92); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(12px); margin-bottom: 20px; }
-        
         .coin-widget { background: linear-gradient(135deg, rgba(241, 196, 15, 0.15), rgba(0,0,0,0.8)); border: 2px solid var(--gold); padding: 15px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
-        .coin-amount { font-size: 28px; color: var(--gold); font-weight: bold; }
-        
-        input, select, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #333; background: rgba(0,0,0,0.6); color: white; margin-bottom: 10px; box-sizing: border-box; font-size: 14px; }
-        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s; margin-top: 5px; }
+        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #333; background: rgba(0,0,0,0.6); color: white; margin-bottom: 10px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
         .btn-gold { background: var(--gold); color: black; }
-        .btn-blue { background: var(--blue); color: white; }
-        .btn-red { background: var(--red); color: white; }
-        
         .grid { display: grid; grid-template-columns: 1fr 320px; gap: 20px; }
-        
         .card { padding: 15px; border-radius: 12px; margin-top: 10px; border-left: 8px solid #555; background: rgba(255,255,255,0.05); }
-        .card-mute { border-left-color: var(--green); background: rgba(46, 204, 113, 0.15); }
-        .card-prisao { border-left-color: var(--blue); background: rgba(52, 152, 219, 0.15); }
-        .card-ban-dias { border-left-color: var(--yellow); background: rgba(243, 156, 18, 0.15); }
-        .card-ban-perm { border-left-color: var(--red); background: rgba(231, 76, 60, 0.15); }
-
+        .card-mute { border-left-color: var(--green); }
+        .card-prisao { border-left-color: var(--blue); }
+        .card-ban-perm { border-left-color: var(--red); }
+        .staff-box { background: rgba(255, 255, 255, 0.05); border: 1px solid #444; padding: 15px; border-radius: 12px; }
         .turno-item { padding: 8px; border-bottom: 1px solid #222; font-size: 12px; display: flex; justify-content: space-between; }
         .turno-atual { background: rgba(241, 196, 15, 0.2); border-left: 3px solid var(--gold); font-weight: bold; }
-
-        .tabs { display: flex; gap: 10px; margin-bottom: 15px; }
-        .tab-btn { flex: 1; padding: 10px; background: #222; border: 1px solid #444; color: white; cursor: pointer; border-radius: 5px; font-size: 11px; font-weight: bold; }
-        .active-tab { background: var(--gold); color: black; border-color: var(--gold); }
-
-        .conv-box { background: rgba(46, 204, 113, 0.1); border: 1px solid var(--green); padding: 15px; border-radius: 12px; margin-top: 20px; }
-        .conv-res { background: rgba(0,0,0,0.4); padding: 10px; border-radius: 8px; border: 1px solid rgba(46, 204, 113, 0.3); font-family: monospace; color: var(--green); font-size: 13px; margin-top: 10px; line-height: 1.5; }
-        
-        .obs-regra { background: rgba(0, 0, 0, 0.3); border: 1px dashed rgba(255,255,255,0.2); padding: 10px; border-radius: 8px; margin-top: 10px; font-size: 12px; color: #eee; }
-        
-        .staff-box { background: rgba(255, 255, 255, 0.05); border: 1px solid #444; padding: 15px; border-radius: 12px; margin-top: 0px; }
-        .user-list { font-size: 12px; color: #aaa; margin-top: 10px; max-height: 120px; overflow-y: auto; text-align: left; }
     </style>
 </head>
 <body>
@@ -60,35 +111,29 @@
 
     <div id="main-app">
         <div class="coin-widget">
-            <div style="font-size: 11px; letter-spacing: 1px; color: #aaa;">SALDO EM TEMPO REAL</div>
-            <div class="coin-amount"><span id="coin-count">0.00</span> <small style="font-size: 12px;">STATE COINS</small></div>
-            <div id="timer-display" style="font-family: monospace; font-size: 16px; color: #fff; margin: 5px 0;">00:00:00</div>
-            <div style="display:flex; gap:10px; justify-content: center;">
-                <button id="btn-ponto" class="btn btn-blue" style="width:140px; padding:8px; font-size:11px;" onclick="togglePonto()">INICIAR TURNO</button>
-                <button class="btn btn-red" style="width:140px; padding:8px; font-size:11px;" onclick="resetarPonto()">RESETAR</button>
+            <div style="font-size: 11px; color: #aaa;">SALDO EM TEMPO REAL</div>
+            <div style="font-size: 28px; color: var(--gold); font-weight: bold;"><span id="coin-count">0.00</span> <small>STATE COINS</small></div>
+            <div id="timer-display" style="font-family: monospace; font-size: 16px;">00:00:00</div>
+            <div style="margin-top:10px;">
+                <button id="btn-ponto" class="btn" style="width:140px; background:var(--blue); color:white; font-size:11px;" onclick="togglePonto()">INICIAR TURNO</button>
+                <button class="btn" style="width:140px; background:var(--red); color:white; font-size:11px;" onclick="resetarPonto()">RESETAR</button>
             </div>
         </div>
 
         <div class="container">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h1 style="color:var(--gold); margin:0;">ADM-EL MACHO <small id="cargo-label" style="font-size:12px; color:white;"></small></h1>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h2 style="color:var(--gold); margin:0;">ADM-EL MACHO <small id="cargo-label" style="color:white; font-size:12px;"></small></h2>
                 <button onclick="location.reload()" style="background:none; border:none; color:var(--red); cursor:pointer; font-weight:bold;">SAIR</button>
             </div>
 
             <div class="grid">
                 <div>
-                    <input id="busca" oninput="buscar()" placeholder="Buscar Regra (Ex: NAME1, CLAN5, RP1)..." style="margin-top:20px;">
+                    <input id="busca" oninput="buscar()" placeholder="Buscar Regra (Ex: NAME1, RP1)...">
                     <div id="resultado"></div>
 
                     <div class="container" style="margin-top:20px; background:rgba(255,255,255,0.02);">
-                        <div class="tabs">
-                            <button class="tab-btn active-tab" id="btn-tab-prisao" onclick="setLogMode('prisao')">LOG PRISÃO</button>
-                            <button class="tab-btn" id="btn-tab-ban" onclick="setLogMode('ban')">SOLICITAR BAN</button>
-                        </div>
-                        <input type="text" id="log-nome" placeholder="Nome do Jogador">
-                        
                         <select id="log-servidor">
-                            <option value="" disabled selected>Selecione o Servidor</option>
+                            <option value="" disabled selected>Selecione o Servidor (27)</option>
                             <option value="Madera-Br">Madera-Br</option><option value="Alameda-Br">Alameda-Br</option>
                             <option value="Lynwood-Br">Lynwood-Br</option><option value="Malibu-Br">Malibu-Br</option>
                             <option value="Bell-Br">Bell-Br</option><option value="Lomita-Br">Lomita-Br</option>
@@ -104,37 +149,27 @@
                             <option value="Hemet-Br">Hemet-Br</option><option value="Wasco-Br">Wasco-Br</option>
                             <option value="Mesa-Br">Mesa-Br</option>
                         </select>
-
+                        <input type="text" id="log-nome" placeholder="Nome do Jogador">
                         <input type="text" id="log-regra" placeholder="Código da Regra">
                         <input type="text" id="log-tempo" placeholder="Tempo">
-                        <input type="text" id="log-motivo" placeholder="Motivo (Opcional)">
+                        <input type="text" id="log-motivo" placeholder="Motivo">
                         <input type="text" id="log-evidencia" placeholder="Link da Evidência">
-                        <button id="main-log-btn" class="btn btn-gold" onclick="copiarLog()">Copiar Log Prisão</button>
+                        <button class="btn btn-gold" onclick="copiarLog()">Copiar Log Completa</button>
                     </div>
                 </div>
 
                 <div>
-                    <div class="staff-box" id="admin-panel">
-                        <h4 style="margin:0 0 10px 0; color:var(--gold); font-size:12px; text-align:center;">👥 GESTÃO DE STAFF</h4>
-                        <input type="text" id="new-user" placeholder="Novo Login" style="padding:5px; font-size:11px;">
-                        <input type="text" id="new-pass" placeholder="Nova Senha" style="padding:5px; font-size:11px;">
-                        <button class="btn btn-gold" style="padding:5px; font-size:10px;" onclick="criarUsuario()">CRIAR ACESSO</button>
-                        <div class="user-list" id="display-users"></div>
+                    <div id="admin-panel-box" class="staff-box" style="display:none;">
+                        <h4 style="margin:0 0 10px 0; color:var(--gold); font-size:12px;">👥 GESTÃO DE STAFF (NUVEM)</h4>
+                        <input type="text" id="new-user" placeholder="Login do ADM" style="padding:5px;">
+                        <input type="text" id="new-pass" placeholder="Senha" style="padding:5px;">
+                        <button class="btn btn-gold" style="padding:5px; font-size:10px;" onclick="criarUsuario()">Salvar no Banco</button>
+                        <div id="display-users" class="user-list" style="margin-top:10px; font-size:11px;"></div>
                     </div>
 
-                    <div style="background: rgba(255,255,255,0.05); border: 1px solid #333; padding: 15px; border-radius: 12px; margin-top:20px;">
-                        <h4 style="margin-top:0; color:var(--gold); font-size:12px; text-align:center;">📅 ESCALA DE TURNOS</h4>
+                    <div class="staff-box" style="margin-top:20px;">
+                        <h4 style="margin:0 0 10px 0; color:var(--gold); font-size:12px;">📅 ESCALA</h4>
                         <div id="lista-turnos"></div>
-                    </div>
-
-                    <div class="conv-box">
-                        <h4 style="margin-top:0; color:var(--green); font-size:12px;">🔢 CONVERSOR DE TEMPO</h4>
-                        <input type="number" id="input-minutos" placeholder="Minutos" oninput="converterTudo()">
-                        <div class="conv-res" id="resultado-extenso">0d 0h 0m</div>
-                        <hr style="border:0; border-top:1px solid rgba(46, 204, 113, 0.2); margin:10px 0;">
-                        <input type="number" id="calc-horas" placeholder="Horas" oninput="converterHorasParaMin()">
-                        <div id="calc-resultado" style="font-weight:bold; color:var(--green); text-align:center; font-size:14px;">0 min</div>
-                        <button class="btn" style="background:var(--green); color:black; padding:5px; font-size:10px;" onclick="aplicarTempoCalc()">USAR NA LOG</button>
                     </div>
                 </div>
             </div>
@@ -143,76 +178,15 @@
 
     <script src="teste.js"></script>
     <script>
-        let tempoSegundos = 0, timerAtivo = false, intervalo, logMode = 'prisao';
-
-        function autenticar() {
-            const u = document.getElementById('user-login').value;
-            const p = document.getElementById('user-pass').value;
-
-            if (u === "ELMACHO" && p === "123") {
-                entrarNoPainel(u);
-                return;
-            }
-
-            let users = JSON.parse(localStorage.getItem('usuarios_staff')) || [];
-            let encontrado = users.find(user => user.login === u && user.senha === p);
-
-            if (encontrado) {
-                entrarNoPainel(u);
-            } else { 
-                alert("Acesso Negado! Verifique login e senha."); 
-            }
-        }
-
-        function entrarNoPainel(usuario) {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-app').style.display = 'block';
-            document.getElementById('cargo-label').innerText = `| Online: ${usuario}`;
-            document.getElementById('admin-panel').style.display = (usuario === "ELMACHO") ? "block" : "none";
-            renderizarEscala();
-            listarUsuarios();
-        }
-
-        function criarUsuario() {
-            let u = document.getElementById('new-user').value;
-            let p = document.getElementById('new-pass').value;
-            if(!u || !p) return;
-            let users = JSON.parse(localStorage.getItem('usuarios_staff')) || [];
-            users.push({login: u, senha: p});
-            localStorage.setItem('usuarios_staff', JSON.stringify(users));
-            document.getElementById('new-user').value = "";
-            document.getElementById('new-pass').value = "";
-            listarUsuarios();
-        }
-
-        function listarUsuarios() {
-            let users = JSON.parse(localStorage.getItem('usuarios_staff')) || [];
-            document.getElementById('display-users').innerHTML = users.map((u, i) => 
-                `👤 ${u.login} <span onclick="remover(${i})" style="color:red;cursor:pointer;float:right">[X]</span><br>`
-            ).join('');
-        }
-
-        function remover(i) {
-            let users = JSON.parse(localStorage.getItem('usuarios_staff'));
-            users.splice(i, 1);
-            localStorage.setItem('usuarios_staff', JSON.stringify(users));
-            listarUsuarios();
-        }
-
-        function setLogMode(mode) {
-            logMode = mode;
-            document.getElementById('btn-tab-prisao').className = mode === 'prisao' ? 'tab-btn active-tab' : 'tab-btn';
-            document.getElementById('btn-tab-ban').className = mode === 'ban' ? 'tab-btn active-tab' : 'tab-btn';
-            document.getElementById('main-log-btn').innerText = mode === 'prisao' ? 'Copiar Log Prisão' : 'Copiar Solicitação Ban';
-        }
+        let tempoSegundos = 0, timerAtivo = false, intervalo;
 
         function togglePonto() {
             const btn = document.getElementById('btn-ponto');
             if(!timerAtivo) {
-                timerAtivo = true; btn.innerText = "PAUSAR TURNO"; btn.className = "btn btn-red";
+                timerAtivo = true; btn.innerText = "PAUSAR"; btn.style.background = "#e74c3c";
                 intervalo = setInterval(() => { tempoSegundos++; atualizarDisplay(); }, 1000);
             } else {
-                timerAtivo = false; btn.innerText = "RETOMAR TURNO"; btn.className = "btn btn-blue";
+                timerAtivo = false; btn.innerText = "RETOMAR"; btn.style.background = "#3498db";
                 clearInterval(intervalo);
             }
         }
@@ -220,7 +194,7 @@
         function resetarPonto() {
             clearInterval(intervalo); tempoSegundos = 0; timerAtivo = false;
             document.getElementById('btn-ponto').innerText = "INICIAR TURNO";
-            document.getElementById('btn-ponto').className = "btn btn-blue";
+            document.getElementById('btn-ponto').style.background = "#3498db";
             atualizarDisplay();
         }
 
@@ -237,43 +211,21 @@
             const turnos = ["00:00-03:00","03:00-06:00","06:00-09:00","09:00-12:00","12:00-15:00","15:00-18:00","18:00-21:00","21:00-00:00"];
             document.getElementById('lista-turnos').innerHTML = turnos.map(t => {
                 const inicio = parseInt(t.split(':')[0]);
-                const ativo = horaAtual >= inicio && (inicio === 21 ? horaAtual < 24 : horaAtual < inicio + 3);
-                return `<div class="turno-item ${ativo ? 'turno-atual' : ''}"><span>${t}</span><span>${ativo ? '● AGORA' : ''}</span></div>`;
+                const ativo = horaAtual >= inicio && horaAtual < inicio + 3;
+                return `<div class="turno-item ${ativo ? 'turno-atual' : ''}"><span>${t}</span><span>${ativo ? '●' : ''}</span></div>`;
             }).join('');
-        }
-
-        function converterTudo() {
-            const minTotal = parseInt(document.getElementById('input-minutos').value) || 0;
-            const d = Math.floor(minTotal / 1440), h = Math.floor((minTotal % 1440) / 60), m = minTotal % 60;
-            document.getElementById('resultado-extenso').innerHTML = `<strong>EQUIVALENTE A:</strong><br>${d}d ${h}h ${m}m`;
-        }
-
-        function converterHorasParaMin() {
-            const h = parseInt(document.getElementById('calc-horas').value) || 0;
-            document.getElementById('calc-resultado').innerText = (h * 60) + " min";
-        }
-
-        function aplicarTempoCalc() {
-            const minH = parseInt(document.getElementById('calc-horas').value) * 60;
-            const minI = document.getElementById('input-minutos').value;
-            document.getElementById('log-tempo').value = (minH || minI) + " min";
         }
 
         function buscar() {
             const t = document.getElementById('busca').value.toUpperCase();
             const res = document.getElementById('resultado');
-            if(!t) { res.innerHTML = ""; return; }
-            if(typeof regras === 'undefined') return;
+            if(!t || typeof regras === 'undefined') { res.innerHTML = ""; return; }
             const r = regras.find(i => i.codigo === t || (i.nome && i.nome.toUpperCase().includes(t)));
             if(r) {
-                let cor = ""; const p = r.punicao.toLowerCase();
-                if(p.includes("mute")) cor = "card-mute";
-                else if(p.includes("prisão")) cor = "card-prisao";
-                else if(p.includes("permanente")) cor = "card-ban-perm";
-                else if(p.includes("bloqueio")) cor = "card-ban-dias";
-                
-                res.innerHTML = `<div class="card ${cor}"><strong>${r.nome}</strong> [${r.codigo}]<br><small>${r.punicao} | ${r.tempo}</small><div class="obs-regra"><strong>OBS:</strong> ${r.obs || 'Nenhuma.'}</div></div>`;
-                document.getElementById('log-regra').value = r.codigo; document.getElementById('log-tempo').value = r.tempo; document.getElementById('log-motivo').value = r.nome;
+                res.innerHTML = `<div class="card"><strong>${r.nome}</strong> [${r.codigo}]<br><small>${r.punicao} | ${r.tempo}</small></div>`;
+                document.getElementById('log-regra').value = r.codigo; 
+                document.getElementById('log-tempo').value = r.tempo; 
+                document.getElementById('log-motivo').value = r.nome;
             }
         }
 
@@ -282,8 +234,7 @@
                   regra = document.getElementById('log-regra').value, tempo = document.getElementById('log-tempo').value, 
                   motivo = document.getElementById('log-motivo').value, evi = document.getElementById('log-evidencia').value;
             if(!serv) { alert("Selecione o Servidor!"); return; }
-            const header = logMode === 'prisao' ? 'PRISÃO' : 'SOLICITAÇÃO DE BAN';
-            let texto = `${header}\nNOME: ${nome}\nSERVIDOR: ${serv}\nREGRA: ${regra}\nMOTIVO: ${motivo}\nTEMPO: ${tempo}\n\nAPLICAR E FAZER LOG\n\nEVIDÊNCIA: ${evi}`;
+            let texto = `PRISÃO\nNOME: ${nome}\nSERVIDOR: ${serv}\nREGRA: ${regra}\nMOTIVO: ${motivo}\nTEMPO: ${tempo}\n\nAPLICAR E FAZER LOG\n\nEVIDÊNCIA: ${evi}`;
             navigator.clipboard.writeText(texto); alert("Log Copiada!");
         }
     </script>
